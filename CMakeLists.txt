@@ -13,13 +13,23 @@ FetchContent_Declare(
     GIT_TAG 3.4
 )
 
+FetchContent_Declare(
+    stb
+    GIT_REPOSITORY https://github.com/nothings/stb.git
+    GIT_TAG master
+)
+
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
-FetchContent_MakeAvailable(glfw)
+FetchContent_MakeAvailable(glfw stb)
+
+add_library(stb INTERFACE)
+target_include_directories(stb INTERFACE ${stb_SOURCE_DIR})
 
 find_package(OpenGL REQUIRED)
 
 add_subdirectory(triangles)
 add_subdirectory(shaders)
+add_subdirectory(textures)
