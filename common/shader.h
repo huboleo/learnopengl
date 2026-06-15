@@ -1,5 +1,6 @@
-#ifndef SHADER_H
-#define SHADER_H
+#ifndef COMMON_SHADER_H
+#define COMMON_SHADER_H
+
 #define GL_SILENCE_DEPRECATION
 #define GLFW_INCLUDE_GLCOREARB
 #include "GLFW/glfw3.h"
@@ -36,7 +37,7 @@ class Shader {
 
             vertexCode = vShaderStream.str();
             fragmentCode = fShaderStream.str();
-        } catch (std::ifstream::failure e) {
+        } catch (const std::ifstream::failure& e) {
             std::println("ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ");
         }
         const char* vShaderCode = vertexCode.c_str();
@@ -64,7 +65,7 @@ class Shader {
         glDeleteShader(fragment);
     }
 
-    void use() { glUseProgram(ID); }
+    void use() const { glUseProgram(ID); }
 
     void setBool(const std::string& name, bool value) const {
         glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
@@ -110,7 +111,7 @@ class Shader {
     }
 
   private:
-    void checkCompileErrors(unsigned int shader, std::string type) {
+    static void checkCompileErrors(unsigned int shader, std::string type) {
         int success;
         char infoLog[1024];
         if (type != "PROGRAM") {
@@ -128,4 +129,5 @@ class Shader {
         }
     }
 };
+
 #endif

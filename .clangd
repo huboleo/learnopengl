@@ -1,0 +1,9 @@
+CompileFlags:
+  Add:
+    - -std=c++23
+  CompilationDatabase: build
+Diagnostics:
+  ClangTidy:
+    FastCheckFilter: None
+  MissingIncludes: Strict
+  UnusedIncludes: Strict

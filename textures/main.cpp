@@ -5,7 +5,7 @@
 #include <cmath>
 #include <print>
 #define STB_IMAGE_IMPLEMENTATION
-#include "shader.h"
+#include <common/shader.h>
 #include <stb_image.h>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {

@@ -4,6 +4,7 @@ add_executable(textures
 
 target_link_libraries(textures
     PRIVATE
+        opengl_common
         glfw
         stb
         OpenGL::GL

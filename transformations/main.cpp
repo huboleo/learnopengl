@@ -2,10 +2,9 @@
 #define GL_SILENCE_DEPRECATION
 #define GLFW_INCLUDE_GLCOREARB
 #include <GLFW/glfw3.h>
-#include <cmath>
 #include <print>
 #define STB_IMAGE_IMPLEMENTATION
-#include "shader.h"
+#include <common/shader.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -37,7 +36,7 @@ int main() {
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    Shader customShader("transformations/shader.vert", "transformations/shader.frag");
+    const Shader customShader("transformations/shader.vert", "transformations/shader.frag");
 
     float vertices[] = {
         // positions          // texture coords

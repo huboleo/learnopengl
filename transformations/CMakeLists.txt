@@ -4,6 +4,7 @@ add_executable(transformation
 
 target_link_libraries(transformation
     PRIVATE
+        opengl_common
         glfw
         stb
         glm_headers

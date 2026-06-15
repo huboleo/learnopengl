@@ -4,6 +4,7 @@ project(opengl_learning LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 include(FetchContent)
 
@@ -39,8 +40,18 @@ target_include_directories(glm_headers INTERFACE ${glm_SOURCE_DIR})
 
 find_package(OpenGL REQUIRED)
 
+add_library(opengl_common INTERFACE)
+target_sources(opengl_common
+    INTERFACE
+        ${CMAKE_CURRENT_SOURCE_DIR}/common/camera.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/common/shader.h
+)
+target_include_directories(opengl_common INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(opengl_common INTERFACE glfw glm_headers OpenGL::GL)
+
 add_subdirectory(triangles)
 add_subdirectory(shaders)
 add_subdirectory(textures)
 add_subdirectory(transformations)
 add_subdirectory(coordinates)
+add_subdirectory(camera)

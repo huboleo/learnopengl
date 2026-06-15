@@ -1,7 +1,7 @@
 #include <cstddef>
 #define GL_SILENCE_DEPRECATION
 #define GLFW_INCLUDE_GLCOREARB
-#include "shader.h"
+#include <common/shader.h>
 #include <GLFW/glfw3.h>
 #include <cmath>
 #include <print>
