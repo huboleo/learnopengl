@@ -3,6 +3,7 @@
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/ext/vector_float3.hpp"
 #include "glm/trigonometric.hpp"
+#include <cmath>
 #include <cstddef>
 #define GL_SILENCE_DEPRECATION
 #define GLFW_INCLUDE_GLCOREARB
@@ -88,8 +89,8 @@ int main() {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glEnable(GL_DEPTH_TEST);
 
-    Shader lightingShader("basic-lighting/shader.vert", "basic-lighting/shader.frag");
-    Shader lightCubeShader("basic-lighting/shader.vert", "basic-lighting/light.frag");
+    Shader lightingShader("materials/shader.vert", "materials/shader.frag");
+    Shader lightCubeShader("materials/shader.vert", "materials/light.frag");
 
     constexpr float vertices[] = {
         -0.5f, -0.5f, -0.5f, 0.0f,  0.0f,  -1.0f, 0.5f,  -0.5f, -0.5f, 0.0f,  0.0f,  -1.0f,
@@ -162,6 +163,22 @@ int main() {
         lightingShader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
         lightingShader.setVec3("lightPos", lightPos);
         lightingShader.setVec3("viewPos", camera.Position);
+        lightingShader.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
+        lightingShader.setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+        lightingShader.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
+        lightingShader.setFloat("material.shininess", 32.0f);
+
+        glm::vec3 lightColor;
+        lightColor.x = std::sin(glfwGetTime() * 2.0f) * 0.5f + 0.5f;
+        lightColor.y = std::sin(glfwGetTime() * 0.7f) * 0.5f + 0.5f;
+        lightColor.z = std::sin(glfwGetTime() * 1.3f) * 0.5f + 0.5f;
+
+        glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
+        glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+
+        lightingShader.setVec3("light.ambient", ambientColor);
+        lightingShader.setVec3("light.diffuse", diffuseColor);
+        lightingShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 
         auto projection =
             glm::perspective(glm::radians(camera.Zoom), 800.0f / 600.0f, 0.1f, 100.0f);
@@ -177,6 +194,7 @@ int main() {
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         lightCubeShader.use();
+        lightCubeShader.setVec3("lightColor", lightColor);
         lightCubeShader.setMat4("projection", projection);
         lightCubeShader.setMat4("view", view);
         model = glm::mat4(1.0f);
